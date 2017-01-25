@@ -450,7 +450,7 @@ public class AddressBook {
      * @return feedback display message for the operation result
      */
     private static String executeFindPersons(String commandArgs) {
-        final Set<String> keywords = extractKeywordsFromFindPersonArgs(commandArgs);
+        final HashSet<String> keywords = extractKeywordsFromFindPersonArgs(commandArgs);
         final ArrayList<String[]> personsFound = getPersonsWithNameContainingAnyKeyword(keywords);
         showToUser(personsFound);
         return getMessageForPersonsDisplayedSummary(personsFound);
@@ -472,7 +472,7 @@ public class AddressBook {
      * @param findPersonCommandArgs full command args string for the find persons command
      * @return set of keywords as specified by args
      */
-    private static Set<String> extractKeywordsFromFindPersonArgs(String findPersonCommandArgs) {
+    private static HashSet<String> extractKeywordsFromFindPersonArgs(String findPersonCommandArgs) {
         return new HashSet<>(splitByWhitespace(findPersonCommandArgs.trim()));
     }
 
@@ -482,11 +482,12 @@ public class AddressBook {
      * @param keywords for searching
      * @return list of persons in full model with name containing some of the keywords
      */
-    private static ArrayList<String[]> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
+    private static ArrayList<String[]> getPersonsWithNameContainingAnyKeyword(HashSet<String> keywords) {
         final ArrayList<String[]> matchedPersons = new ArrayList<>();
+        HashSet<String> lowerCaseKeywords = makeAllLowerCase(keywords);
         for (String[] person : getAllPersonsInAddressBook()) {
-            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
-            if (!Collections.disjoint(wordsInName, keywords)) {
+            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person).toLowerCase()));
+            if (!Collections.disjoint(wordsInName, lowerCaseKeywords)) {
                 matchedPersons.add(person);
             }
         }
@@ -1162,6 +1163,20 @@ public class AddressBook {
      */
     private static ArrayList<String> splitByWhitespace(String toSplit) {
         return new ArrayList<>(Arrays.asList(toSplit.trim().split("\\s+")));
+    }
+
+    /**
+     * Applies toLowerCase() to every string in the HashSet
+     *
+     * @param strings the HashSet of Strings
+     * @return the lower case set of strings
+     */
+    private static HashSet<String> makeAllLowerCase(HashSet<String> strings) {
+        HashSet<String> lowerCaseStrings = new HashSet<String>();
+        for (String string : strings) {
+            lowerCaseStrings.add(string.toLowerCase());
+        }
+        return lowerCaseStrings;
     }
 
 }
