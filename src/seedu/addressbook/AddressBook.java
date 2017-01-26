@@ -1,7 +1,5 @@
 package seedu.addressbook;
 
-import static seedu.addressbook.AddressBook.PERSON_DATA_INDEX_NAME;
-
 /*
  * NOTE : =============================================================
  * This class is written in a procedural fashion (i.e. not Object-Oriented)
@@ -146,13 +144,7 @@ public class AddressBook {
      * used by the internal String[] storage format.
      * For example, a person's name is stored as the 0th element in the array.
      */
-
-    /* Public as required by PersonCompare. In general, I would
-     * make person another object and create accessor methods on it.
-     * However, this is a procedural project which is being combined with the object
-     * oriented "sort" method of Java Collections.
-     */
-    public static final int PERSON_DATA_INDEX_NAME = 0;
+    private static final int PERSON_DATA_INDEX_NAME = 0;
     private static final int PERSON_DATA_INDEX_PHONE = 1;
     private static final int PERSON_DATA_INDEX_EMAIL = 2;
 
