@@ -138,6 +138,10 @@ public class AddressBook {
 
     private static final String DIVIDER = "===================================================";
 
+    private static final String ERROR_MSG_SWAP_ELEMENTS_NEGATIVE_IDX = "Cannot swap an element of index < 0.";
+    private static final String ERROR_MSG_SWAP_ELEMENTS_OVERFLOW_IDX = "Cannot swap an element with index greater than length of list.";
+
+
 
     /* We use a String array to store details of a single person.
      * The constants given below are the indexes for the different data elements of a person
@@ -1243,10 +1247,10 @@ public class AddressBook {
      */
     private static void swapElements(ArrayList<String[]> arr, int idx1, int idx2) throws IllegalArgumentException {
         if (idx1 < 0 || idx2 < 0) {
-            throw new IllegalArgumentException("Cannot swap an element of index < 0.");
+            throw new IllegalArgumentException(ERROR_MSG_SWAP_ELEMENTS_NEGATIVE_IDX);
         }
         if (arr.size() < idx1 || arr.size() < idx2) {
-            throw new IllegalArgumentException("Cannot swap an element with index greater than length of list.");
+            throw new IllegalArgumentException(ERROR_MSG_SWAP_ELEMENTS_OVERFLOW_IDX);
         }
         String[] temp = arr.get(idx1);
         arr.set(idx1, arr.get(idx2));
