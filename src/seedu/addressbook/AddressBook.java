@@ -338,9 +338,7 @@ public class AddressBook {
      * If a file already exists, it must be a regular file.
      */
     private static boolean hasValidFileName(Path filePath) {
-        boolean hasExtension = filePath.getFileName().toString().lastIndexOf('.') > 0;
-        boolean isRegularFile = !Files.exists(filePath) || Files.isRegularFile(filePath);
-        return hasExtension && isRegularFile;
+        return fileHasExtension(filePath) && isRegularFile(filePath);
     }
 
     /**
@@ -1167,6 +1165,26 @@ public class AddressBook {
      */
     private static ArrayList<String> splitByWhitespace(String toSplit) {
         return new ArrayList<>(Arrays.asList(toSplit.trim().split("\\s+")));
+    }
+
+    /**
+     * Returns true if the file has an extension. Else false
+     *
+     * @param filePath the file path to check
+     * @return whether the filename has an extension or not
+     */
+    private static boolean fileHasExtension(Path filePath) {
+        return filePath.getFileName().toString().lastIndexOf('.') > 0;
+    }
+
+    /**
+     * Returns true if the file does not exist or if it does and it's a regular file
+     *
+     * @param filePath the file path to check
+     * @return whether the file is a regular file or not
+     */
+    private static boolean isRegularFile(Path filePath) {
+        return !Files.exists(filePath) || Files.isRegularFile(filePath);
     }
 
 }
