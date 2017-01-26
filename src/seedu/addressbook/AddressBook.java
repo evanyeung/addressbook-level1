@@ -1,5 +1,7 @@
 package seedu.addressbook;
 
+import static seedu.addressbook.AddressBook.PERSON_DATA_INDEX_NAME;
+
 /*
  * NOTE : =============================================================
  * This class is written in a procedural fashion (i.e. not Object-Oriented)
@@ -675,12 +677,34 @@ public class AddressBook {
     }
 
     /**
-     * Returns a sorted ArrayList of persons
+     * Returns a sorted ArrayList of persons using an insertion sort.
+     *
+     * @param persons the ArrayList of persons to sort
      */
     private static ArrayList<String[]> sortPersons(ArrayList<String[]> persons) {
         ArrayList<String[]> sortedPersons = new ArrayList<String[]>(persons);
-        Collections.sort(sortedPersons, new PersonCompare());
+        for (int i = 0; i < sortedPersons.size(); i++) {
+            int smallestPersonIdx = i;
+            for (int j = i; j < sortedPersons.size(); j++) {
+               if (personCompare(sortedPersons.get(smallestPersonIdx), sortedPersons.get(j)) > 0) {
+                   smallestPersonIdx = j;
+               }
+            }
+            swapElements(sortedPersons, i, smallestPersonIdx);
+        }
         return sortedPersons;
+    }
+
+    /**
+     * Compares person1 and person2 lexographically base on the name field
+     *
+     * @param person1 the first person to compare
+     * @param person2 the second person to compare
+     * @return an integer: < 0 if person1 < person2, == 0 if person1 == person 2, > 0 if person1 > person2
+     */
+    private static int personCompare(String[] person1, String[] person2) {
+        return person1[PERSON_DATA_INDEX_NAME].toLowerCase()
+                .compareTo(person2[PERSON_DATA_INDEX_NAME].toLowerCase());
     }
 
     /**
@@ -1216,5 +1240,24 @@ public class AddressBook {
             lowerCaseStrings.add(string.toLowerCase());
         }
         return lowerCaseStrings;
+    }
+
+    /**
+     * Swaps the position of two elements in a given ArrayList
+     *
+     * @param arr the ArrayList containing the two elements
+     * @param idx1 the index of the first element to be swapped
+     * @param idx2 the index of the second element to be swapped
+     */
+    private static void swapElements(ArrayList<String[]> arr, int idx1, int idx2) throws IllegalArgumentException {
+        if (idx1 < 0 || idx2 < 0) {
+            throw new IllegalArgumentException("Cannot swap an element of index < 0.");
+        }
+        if (arr.size() < idx1 || arr.size() < idx2) {
+            throw new IllegalArgumentException("Cannot swap an element with index greater than length of list.");
+        }
+        String[] temp = arr.get(idx1);
+        arr.set(idx1, arr.get(idx2));
+        arr.set(idx2, temp);
     }
 }
